@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BeritaCollection;
+use App\Http\Resources\BeritaResource;
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BeritaController extends Controller
 {
 
 
-    public function __constructor()
-    {
-        $this->middleware('auth:sanctum');
-    }
+    // public function __constructor()
+    // {
+    //     $this->middleware('auth:sanctum');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -23,7 +25,6 @@ class BeritaController extends Controller
     public function index()
     {
         $data = Berita::with('user')->paginate(10);
-        // dd($data);
         return new BeritaCollection($data);
         // return response()->json(new BeritaCollection($data), 200);
     }
@@ -46,7 +47,24 @@ class BeritaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "judul" => "required",
+            "slug" => "required|unique:berita",
+            "tanggal_pembuatan" => "required",
+            "content" => "required|min:10",
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+        Berita::create([
+            "id_user" => auth()->user()->id,
+            "judul" => $request->judul,
+            "slug" => $request->slug,
+            "tanggal_pembuatan" => $request->tanggal_pembuatan,
+            "content" => $request->content,
+            "cover" => $request->cover,
+        ]);
+        return response()->json(['message' => 'Berita berhasil ditambahkan'], 201);
     }
 
     /**
@@ -57,7 +75,7 @@ class BeritaController extends Controller
      */
     public function show(Berita $berita)
     {
-        //
+        return new BeritaResource($berita);
     }
 
     /**
@@ -68,7 +86,6 @@ class BeritaController extends Controller
      */
     public function edit(Berita $berita)
     {
-        //
     }
 
     /**
@@ -80,7 +97,11 @@ class BeritaController extends Controller
      */
     public function update(Request $request, Berita $berita)
     {
-        //
+        $berita->update($request->all());
+        return response()->json([
+            'message' => "Data berhasil diupdate",
+            'data' => $berita
+        ], 200);
     }
 
     /**
@@ -91,6 +112,7 @@ class BeritaController extends Controller
      */
     public function destroy(Berita $berita)
     {
-        //
+        $berita->delete($berita);
+        return response()->json(["message" => "Data telah dihapus"], 200);
     }
 }

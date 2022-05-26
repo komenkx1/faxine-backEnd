@@ -9,4 +9,14 @@ class Lokasi extends Model
 {
     use HasFactory;
     protected $table = 'lokasi';
+    // protected $guarded = ["id"];
+    protected $fillable = [
+        'id',
+        'alamat',
+        'status',
+        'link_google_map',
+        'tanggal_mulai',
+        'tanggal_berakhir',
+        'kapasitas',
+    ];
 }

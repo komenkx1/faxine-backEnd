@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\LokasiCollection;
+use App\Http\Resources\LokasiResource;
 use App\Models\Lokasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LokasiController extends Controller
 {
@@ -38,7 +40,19 @@ class LokasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "alamat" => "required",
+            "status" => "required",
+            "link_google_map" => "required",
+            "tanggal_mulai" => "required",
+            "tanggal_berakhir" => "required",
+            "kapasitas" => "required",
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+        Lokasi::create($request->all());
+        return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
     }
 
     /**
@@ -49,7 +63,7 @@ class LokasiController extends Controller
      */
     public function show(Lokasi $lokasi)
     {
-        //
+        return new LokasiResource($lokasi);
     }
 
     /**
@@ -72,7 +86,11 @@ class LokasiController extends Controller
      */
     public function update(Request $request, Lokasi $lokasi)
     {
-        //
+        $lokasi->update($request->all());
+        return response()->json([
+            'message' => "Data berhasil diupdate",
+            'data' => $lokasi
+        ], 200);
     }
 
     /**
@@ -83,6 +101,9 @@ class LokasiController extends Controller
      */
     public function destroy(Lokasi $lokasi)
     {
-        //
+        $lokasi->delete();
+        return response()->json([
+            'message' => "Data berhasil dihapus"
+        ], 200);
     }
 }

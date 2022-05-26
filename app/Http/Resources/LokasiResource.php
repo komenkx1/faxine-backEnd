@@ -17,6 +17,7 @@ class LokasiResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
+            'id' => $this->id,
             'alamat' => $this->alamat,
             'status' => $this->status,
             'link_google_map' => $this->link_google_map,
