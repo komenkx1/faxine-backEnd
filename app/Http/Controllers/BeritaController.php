@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class BeritaController extends Controller
 {
+
+
+    public function __constructor()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     /**
      * Display a listing of the resource.
      *
