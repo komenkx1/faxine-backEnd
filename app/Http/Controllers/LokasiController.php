@@ -64,13 +64,15 @@ class LokasiController extends Controller
         //check apakah antara hari ini dengan tanggal mulai memiliki selisih
         $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
 
-        //cek jika selisihnya itu lebih atau sama dengan 1 hari baru boleh nambah lokasi
+        //jika memiliki selisih maka bole melakukan operasi
         if ($dayDifference) {
             //by default jika melakuan add data, maka statusnya segera
             $request["status"] = "segera";
             Lokasi::create($request->all());
             return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
         }
+        
+        //jika tidak memiliki selisih maka akan menampilkan pesan error
         return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
     }
 
@@ -108,7 +110,7 @@ class LokasiController extends Controller
         //check apakah antara hari ini dengan tanggal mulai memiliki selisih
         $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
 
-        //cek jika selisihnya itu lebih atau sama dengan 1 hari baru boleh nambah lokasi
+        //jika memiliki selisih maka bole melakukan operasi
         if ($dayDifference) {
 
             //by default jika melakuan add data, maka statusnya segera
@@ -118,6 +120,8 @@ class LokasiController extends Controller
                 'data' => $lokasi
             ], 200);
         }
+
+        //jika tidak memiliki selisih maka akan menampilkan pesan error
         return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
     }
 
