@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BeritaCollection;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,10 @@ class BeritaController extends Controller
      */
     public function index()
     {
-        //
+        $data = Berita::with('user')->paginate(10);
+        // dd($data);
+        return new BeritaCollection($data);
+        // return response()->json(new BeritaCollection($data), 200);
     }
 
     /**

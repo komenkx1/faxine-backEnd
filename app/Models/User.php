@@ -44,6 +44,6 @@ class User extends Authenticatable
 
     public function berita()
     {
-        return $this->hasMany(Berita::class);
+        return $this->hasMany(Berita::class, 'id_user');
     }
 }

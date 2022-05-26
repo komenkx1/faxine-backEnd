@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\LokasiCollection;
-use App\Models\Lokasi;
 use Illuminate\Http\Request;
 
-class LokasiController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +13,7 @@ class LokasiController extends Controller
      */
     public function index()
     {
-        $data = Lokasi::paginate(10);
-        return new LokasiCollection($data);
-        // return response()->json(new PostCollection($data), 200);
+        //
     }
 
     /**
@@ -44,10 +40,10 @@ class LokasiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Lokasi  $lokasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Lokasi $lokasi)
+    public function show($id)
     {
         //
     }
@@ -55,10 +51,10 @@ class LokasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Lokasi  $lokasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Lokasi $lokasi)
+    public function edit($id)
     {
         //
     }
@@ -67,10 +63,10 @@ class LokasiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Lokasi  $lokasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lokasi $lokasi)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -78,10 +74,10 @@ class LokasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Lokasi  $lokasi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lokasi $lokasi)
+    public function destroy($id)
     {
         //
     }
