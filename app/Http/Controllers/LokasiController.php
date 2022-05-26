@@ -42,8 +42,6 @@ class LokasiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "alamat" => "required",
-            "status" => "required",
-            "link_google_map" => "required",
             "tanggal_mulai" => "required",
             "tanggal_berakhir" => "required",
             "kapasitas" => "required",
@@ -51,6 +49,9 @@ class LokasiController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
+        //by default jika melakuan add data, maka statusnya segera
+        $request["status"] = "segera";
+
         Lokasi::create($request->all());
         return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
     }

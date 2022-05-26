@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('lokasi', function (Blueprint $table) {
             $table->id();
             $table->string("alamat");
-            $table->enum("status", ["segera", "Selesai"]);
+            $table->enum("status", ["segera", "selesai"]);
             $table->string("link_google_map")->nullable();
             $table->dateTime("tanggal_mulai");
             $table->dateTime("tanggal_berakhir");
