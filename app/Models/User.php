@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'no_hp',
     ];
 
     /**
@@ -43,8 +42,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function news()
+    public function berita()
     {
-        return $this->hasMany(News::class);
+        return $this->hasMany(Berita::class);
     }
 }
