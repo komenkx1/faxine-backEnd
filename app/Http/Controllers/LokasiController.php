@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\LokasiCollection;
 use App\Http\Resources\LokasiResource;
 use App\Models\Lokasi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,13 +24,23 @@ class LokasiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Check Difference date on date now.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function checkDifferenceDay($startDate)
     {
-        //
+        //parse string to dateTIme Carbon
+        $startDate = Carbon::parse($startDate);
+        $now = Carbon::now()->toDateString();
+
+        //selisih waktu sekarang dengan tanggal mulai
+        $dayDifference = $startDate->diffInDays($now);
+
+        if ($dayDifference >= 1) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -49,11 +60,18 @@ class LokasiController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-        //by default jika melakuan add data, maka statusnya segera
-        $request["status"] = "segera";
 
-        Lokasi::create($request->all());
-        return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
+        //check apakah antara hari ini dengan tanggal mulai memiliki selisih
+        $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
+
+        //cek jika selisihnya itu lebih atau sama dengan 1 hari baru boleh nambah lokasi
+        if ($dayDifference) {
+            //by default jika melakuan add data, maka statusnya segera
+            $request["status"] = "segera";
+            Lokasi::create($request->all());
+            return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
+        }
+        return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
     }
 
     /**
@@ -87,11 +105,20 @@ class LokasiController extends Controller
      */
     public function update(Request $request, Lokasi $lokasi)
     {
-        $lokasi->update($request->all());
-        return response()->json([
-            'message' => "Data berhasil diupdate",
-            'data' => $lokasi
-        ], 200);
+        //check apakah antara hari ini dengan tanggal mulai memiliki selisih
+        $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
+
+        //cek jika selisihnya itu lebih atau sama dengan 1 hari baru boleh nambah lokasi
+        if ($dayDifference) {
+
+            //by default jika melakuan add data, maka statusnya segera
+            $lokasi->update($request->all());
+            return response()->json([
+                'message' => "Data berhasil diupdate",
+                'data' => $lokasi
+            ], 200);
+        }
+        return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
     }
 
     /**
