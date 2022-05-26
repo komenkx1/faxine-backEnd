@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('lokasi', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string("no_hp");
-            $table->string('password');
-            $table->string('no_hp');
-            $table->rememberToken();
+            $table->string("lokasi");
+            $table->enum("alamat",["Akan Datang", "Selesai"]);
+            $table->string("link_google_map")->nullable();
+            $table->dateTime("tanggal_mulai");
+            $table->dateTime("tanggal_berakhir");
+            $table->integer("kapasitas");
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('lokasi');
     }
 };
