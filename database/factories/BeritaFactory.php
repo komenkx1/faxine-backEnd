@@ -20,7 +20,6 @@ class BeritaFactory extends Factory
             'id_user' => $this->faker->randomDigitNotNull(),
             'judul' => $this->faker->sentence(),
             'slug' => $this->faker->slug,
-            'tanggal_pembuatan' => $this->faker->dateTime(),
             'content' => $this->faker->paragraph(),
             'cover' => $this->faker->imageUrl(640, 480, 'health', true),
         ];

@@ -12,6 +12,7 @@ class Lokasi extends Model
     // protected $guarded = ["id"];
     protected $fillable = [
         'id',
+        'nama_masyarakat',
         'alamat',
         'status',
         'link_google_map',

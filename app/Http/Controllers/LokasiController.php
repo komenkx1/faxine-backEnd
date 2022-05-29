@@ -52,6 +52,7 @@ class LokasiController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            "nama_masyarakat" => "required",
             "alamat" => "required",
             "tanggal_mulai" => "required",
             "tanggal_berakhir" => "required",
@@ -71,7 +72,7 @@ class LokasiController extends Controller
             Lokasi::create($request->all());
             return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
         }
-        
+
         //jika tidak memiliki selisih maka akan menampilkan pesan error
         return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
     }

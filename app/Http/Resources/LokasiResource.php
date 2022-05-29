@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LokasiResource extends JsonResource
@@ -15,9 +17,11 @@ class LokasiResource extends JsonResource
 
     public function toArray($request)
     {
+        $carbon = Carbon::now();
         // return parent::toArray($request);
         return [
             'id' => $this->id,
+            'nama_masyarakat' => $this->nama_masyarakat,
             'alamat' => $this->alamat,
             'status' => $this->status,
             'link_google_map' => $this->link_google_map,

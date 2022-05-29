@@ -12,11 +12,6 @@ class BeritaController extends Controller
 {
 
 
-    // public function __constructor()
-    // {
-    //     $this->middleware('auth:sanctum');
-    // }
-
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +45,6 @@ class BeritaController extends Controller
         $validator = Validator::make($request->all(), [
             "judul" => "required",
             "slug" => "required|unique:berita",
-            "tanggal_pembuatan" => "required",
             "content" => "required|min:10",
         ]);
         if ($validator->fails()) {
@@ -60,7 +54,6 @@ class BeritaController extends Controller
             "id_user" => auth()->user()->id,
             "judul" => $request->judul,
             "slug" => $request->slug,
-            "tanggal_pembuatan" => $request->tanggal_pembuatan,
             "content" => $request->content,
             "cover" => $request->cover,
         ]);
@@ -73,9 +66,10 @@ class BeritaController extends Controller
      * @param  \App\Models\Berita  $berita
      * @return \Illuminate\Http\Response
      */
-    public function show(Berita $berita)
+    public function show(Berita $beritum)
     {
-        return new BeritaResource($berita);
+        //beritum ?  php artisan route:list -v
+        return new BeritaResource($beritum);
     }
 
     /**
@@ -84,7 +78,7 @@ class BeritaController extends Controller
      * @param  \App\Models\Berita  $berita
      * @return \Illuminate\Http\Response
      */
-    public function edit(Berita $berita)
+    public function edit(Berita $beritum)
     {
     }
 
@@ -110,9 +104,9 @@ class BeritaController extends Controller
      * @param  \App\Models\Berita  $berita
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Berita $berita)
+    public function destroy(Berita $beritum)
     {
-        $berita->delete($berita);
+        $beritum->delete($beritum);
         return response()->json(["message" => "Data telah dihapus"], 200);
     }
 }

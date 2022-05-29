@@ -17,11 +17,12 @@ class LokasiFactory extends Factory
     public function definition()
     {
         return [
+            'nama_masyarakat' => $this->faker->name,
             'alamat' => $this->faker->address(),
             'status' => $this->faker->randomElement(['segera', 'Selesai']),
             'link_google_map' => $this->faker->url(),
-            'tanggal_mulai' => $this->faker->dateTimeBetween('-1 year', '+1 year'),
-            'tanggal_berakhir' => $this->faker->dateTimeBetween('-1 year', '+1 year'),
+            'tanggal_mulai' => $this->faker->dateTimeBetween('-1 days', '+1 days'),
+            'tanggal_berakhir' => $this->faker->dateTimeBetween('+2 days', '+3 days'),
             'kapasitas' => $this->faker->numberBetween(20, 100),
         ];
     }

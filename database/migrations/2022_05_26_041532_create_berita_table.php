@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId("id_user")->constrained("users");
             $table->string("judul");
             $table->string("slug");
-            $table->dateTime("tanggal_pembuatan");
             $table->text("content");
             $table->string("cover");
             $table->timestamps();

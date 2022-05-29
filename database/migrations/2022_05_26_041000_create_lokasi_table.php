@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('lokasi', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_masyarakat');
             $table->string("alamat");
             $table->enum("status", ["segera", "selesai"]);
             $table->string("link_google_map")->nullable();
