@@ -32,11 +32,12 @@ class LokasiController extends Controller
     {
         //parse string to dateTIme Carbon
         $startDate = Carbon::parse($startDate);
-        $now = Carbon::now()->toDateString();
+        $now = Carbon::parse(Carbon::now()->format('Y-m-d'));
 
         //selisih waktu sekarang dengan tanggal mulai
-        $dayDifference = $startDate->diffInDays($now);
+        $dayDifference = $now->diffInDays( $startDate, false);
 
+        // dd($dayDifference);
         if ($dayDifference >= 1) {
             return true;
         }
@@ -59,22 +60,26 @@ class LokasiController extends Controller
             "kapasitas" => "required",
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(),400);
         }
 
         //check apakah antara hari ini dengan tanggal mulai memiliki selisih
         $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
 
         //jika memiliki selisih maka bole melakukan operasi
-        if ($dayDifference) {
-            //by default jika melakuan add data, maka statusnya segera
-            $request["status"] = "segera";
-            Lokasi::create($request->all());
-            return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
+        if ($request->tanggal_mulai <= $request->tanggal_berakhir) {
+            if ($dayDifference) {
+                //by default jika melakuan add data, maka statusnya segera
+                $request["status"] = "segera";
+                Lokasi::create($request->all());
+                return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
+            }
+            return response()->json(["message" => "Tanggal mulai minimal sehari sebelum vaksinasi berlangsung!"], 400);
+            
         }
+        return response()->json(["message" => "Tanggal berakhir tidak boleh lebih kecil dari tanggal mulai!"], 400);
 
         //jika tidak memiliki selisih maka akan menampilkan pesan error
-        return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
     }
 
     /**
