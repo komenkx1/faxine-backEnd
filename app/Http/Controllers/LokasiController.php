@@ -117,6 +117,7 @@ class LokasiController extends Controller
         $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
 
         //jika memiliki selisih maka bole melakukan operasi
+        if ($request->tanggal_mulai <= $request->tanggal_berakhir) {
         if ($dayDifference) {
 
             //by default jika melakuan add data, maka statusnya segera
@@ -129,6 +130,8 @@ class LokasiController extends Controller
 
         //jika tidak memiliki selisih maka akan menampilkan pesan error
         return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
+    }
+    return response()->json(["message" => "Tanggal berakhir tidak boleh lebih kecil dari tanggal mulai!"], 400);
     }
 
     /**
