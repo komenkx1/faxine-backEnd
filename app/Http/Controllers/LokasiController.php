@@ -18,7 +18,7 @@ class LokasiController extends Controller
      */
     public function index()
     {
-        $data = Lokasi::paginate(10);
+        $data = Lokasi::latest()->get();
         return new LokasiCollection($data);
         // return response()->json(new PostCollection($data), 200);
     }
@@ -35,7 +35,7 @@ class LokasiController extends Controller
         $now = Carbon::parse(Carbon::now()->format('Y-m-d'));
 
         //selisih waktu sekarang dengan tanggal mulai
-        $dayDifference = $now->diffInDays( $startDate, false);
+        $dayDifference = $now->diffInDays($startDate, false);
 
         // dd($dayDifference);
         if ($dayDifference >= 1) {
@@ -60,7 +60,7 @@ class LokasiController extends Controller
             "kapasitas" => "required",
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors(),400);
+            return response()->json($validator->errors(), 400);
         }
 
         //check apakah antara hari ini dengan tanggal mulai memiliki selisih
@@ -75,7 +75,6 @@ class LokasiController extends Controller
                 return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
             }
             return response()->json(["message" => "Tanggal mulai minimal sehari sebelum vaksinasi berlangsung!"], 400);
-            
         }
         return response()->json(["message" => "Tanggal berakhir tidak boleh lebih kecil dari tanggal mulai!"], 400);
 
@@ -113,25 +112,34 @@ class LokasiController extends Controller
      */
     public function update(Request $request, Lokasi $lokasi)
     {
-        //check apakah antara hari ini dengan tanggal mulai memiliki selisih
-        $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
+        $validator = Validator::make($request->all(), [
+            "nama_masyarakat" => "required",
+            "alamat" => "required",
+            "tanggal_mulai" => "required",
+            "tanggal_berakhir" => "required",
+            "kapasitas" => "required",
+        ]);
 
-        //jika memiliki selisih maka bole melakukan operasi
-        if ($request->tanggal_mulai <= $request->tanggal_berakhir) {
-        if ($dayDifference) {
-
-            //by default jika melakuan add data, maka statusnya segera
-            $lokasi->update($request->all());
-            return response()->json([
-                'message' => "Data berhasil diupdate",
-                'data' => $lokasi
-            ], 200);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
         }
 
-        //jika tidak memiliki selisih maka akan menampilkan pesan error
-        return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
-    }
-    return response()->json(["message" => "Tanggal berakhir tidak boleh lebih kecil dari tanggal mulai!"], 400);
+        //check apakah antara hari ini dengan tanggal mulai memiliki selisih
+        $dayDifference = $this->checkDifferenceDay($request->tanggal_mulai);
+        //jika memiliki selisih maka bole melakukan operasi
+        if ($request->tanggal_mulai <= $request->tanggal_berakhir) {
+            if ($dayDifference) {
+                //by default jika melakuan add data, maka statusnya segera
+                $lokasi->update($request->all());
+                return response()->json([
+                    'message' => "Data berhasil diupdate",
+                    'data' => $lokasi
+                ], 200);
+            }
+            //jika tidak memiliki selisih maka akan menampilkan pesan error
+            return response()->json(["message" => "Tanggal mulai minimal sehari sebelum hari ini"], 400);
+        }
+        return response()->json(["message" => "Tanggal berakhir tidak boleh lebih kecil dari tanggal mulai!"], 400);
     }
 
     /**

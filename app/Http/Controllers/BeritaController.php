@@ -19,7 +19,7 @@ class BeritaController extends Controller
      */
     public function index()
     {
-        $data = Berita::with('user')->paginate(10);
+        $data = Berita::with('user')->latest()->get();
         return new BeritaCollection($data);
         // return response()->json(new BeritaCollection($data), 200);
     }
@@ -48,7 +48,7 @@ class BeritaController extends Controller
             "content" => "required|min:10",
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), 400);
         }
         Berita::create([
             "id_user" => auth()->user()->id,
