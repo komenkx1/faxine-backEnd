@@ -20,13 +20,15 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'no_hp' => 'required',
             'password' => 'required|string|min:8',
-            'no_hp' => 'required'
-
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json(
+                $validator->errors()->first(),
+                400
+            );
         }
 
         $user = User::create([
@@ -39,7 +41,11 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()
-            ->json(['data' => $user, 'access_token' => $token, 'token_type' => 'Bearer',]);
+            ->json([
+                "status" => "success",
+                'data' => $user, 'access_token' => $token,
+                'token_type' => 'Bearer'
+            ], 201);
     }
 
     /**
@@ -65,9 +71,21 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(
+                $validator->errors()->first(),
+                400
+            );
+        }
+
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()
-                ->json(['message' => 'Unauthorized'], 401);
+                ->json('Unauthorized', 401);
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
@@ -75,7 +93,12 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()
-            ->json(['message' => 'Hi ' . $user->name . ', welcome to home', 'access_token' => $token, 'token_type' => 'Bearer',]);
+            ->json([
+                "status" => "success",
+                'message' => 'Hi ' . $user->name . ', welcome to home',
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ]);
     }
 
     /**
