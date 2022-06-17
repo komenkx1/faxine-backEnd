@@ -23,17 +23,17 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/berita/search', [BeritaController::class, 'search']);
 Route::get('/lokasi/search', [LokasiController::class, 'search']);
-Route::resource('/lokasi', LokasiController::class)->only(['store', 'index']);
 //Protecting Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/profile', function (Request $request) {
         return auth()->user();
     });
-
+    
     Route::resource('/lokasi', LokasiController::class);
     Route::resource('/berita', BeritaController::class);
-
+    
     // API route for logout user
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-// Route::resource('/berita', BeritaController::class)->only('index', 'show');
+Route::resource('/lokasi', LokasiController::class)->only(['store', 'index']);
+
