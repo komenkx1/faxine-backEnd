@@ -81,6 +81,12 @@ class LokasiController extends Controller
         //jika tidak memiliki selisih maka akan menampilkan pesan error
     }
 
+    public function search(Request $request)
+    {       
+        $data = Lokasi::where('alamat', "like", "%".$request->get('query')."%")->get();
+        return new LokasiCollection($data);
+    }
+
     /**
      * Display the specified resource.
      *

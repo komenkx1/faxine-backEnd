@@ -60,6 +60,11 @@ class BeritaController extends Controller
         return response()->json(['message' => 'Berita berhasil ditambahkan'], 201);
     }
 
+    public function search(Request $request)
+    {       
+        $data = Berita::where('judul', "like", "%".$request->get('query')."%")->get();
+        return new BeritaCollection($data);
+    }
     /**
      * Display the specified resource.
      *
