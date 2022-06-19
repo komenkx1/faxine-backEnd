@@ -36,4 +36,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 Route::resource('/lokasi', LokasiController::class)->only(['store', 'index']);
+Route::resource('/berita', LokasiController::class)->only(['index', 'show']);
 
