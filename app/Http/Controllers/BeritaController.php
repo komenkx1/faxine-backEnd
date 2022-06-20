@@ -20,7 +20,7 @@ class BeritaController extends Controller
      */
     public function index()
     {
-        $data = Berita::with('user')->latest()->get();
+        $data = Berita::with('user')->latest()->paginate(10);
         return new BeritaCollection($data);
         // return response()->json(new BeritaCollection($data), 200);
     }
@@ -62,7 +62,7 @@ class BeritaController extends Controller
 
     public function search(Request $request)
     {
-        $data = Berita::where('judul', "like", "%" . $request->get('query') . "%")->get();
+        $data = Berita::where('judul', "like", "%" . $request->get('query') . "%")->with('user')->get();
         return new BeritaCollection($data);
     }
     /**
