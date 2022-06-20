@@ -7,6 +7,7 @@ use App\Http\Resources\BeritaResource;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
@@ -44,7 +45,6 @@ class BeritaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "judul" => "required",
-            "slug" => "required|unique:berita",
             "content" => "required|min:10",
         ]);
         if ($validator->fails()) {
@@ -53,7 +53,7 @@ class BeritaController extends Controller
         Berita::create([
             "id_user" => auth()->user()->id,
             "judul" => $request->judul,
-            "slug" => $request->slug,
+            "slug" => Str::slug($request->judul),
             "content" => $request->content,
             "cover" => $request->cover,
         ]);
@@ -71,10 +71,9 @@ class BeritaController extends Controller
      * @param  \App\Models\Berita  $berita
      * @return \Illuminate\Http\Response
      */
-    public function show(Berita $beritum)
+    public function show(Berita $berita)
     {
-        //beritum ?  php artisan route:list -v
-        return new BeritaResource($beritum);
+        return new BeritaResource($berita);
     }
 
     /**
@@ -96,6 +95,10 @@ class BeritaController extends Controller
      */
     public function update(Request $request, Berita $berita)
     {
+        if ($request->judul) {
+            $request['slug'] = Str::slug($request->judul);
+        }
+
         $berita->update($request->all());
         return response()->json([
             'message' => "Data berhasil diupdate",

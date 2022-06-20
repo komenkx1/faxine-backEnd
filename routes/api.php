@@ -30,11 +30,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     
     Route::resource('/lokasi', LokasiController::class);
-    Route::resource('/berita', BeritaController::class);
+    Route::resource('/berita', BeritaController::class)->except(['show']);
     
     // API route for logout user
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 Route::resource('/lokasi', LokasiController::class)->only(['store', 'index']);
-Route::resource('/berita', BeritaController::class)->only(['index', 'show']);
+Route::get('/berita/{berita:slug}', [BeritaController::class, 'show'])->name('berita.show');
+Route::resource('/berita', BeritaController::class)->only(['index'])->except(['show']);
 
