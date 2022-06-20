@@ -61,8 +61,8 @@ class BeritaController extends Controller
     }
 
     public function search(Request $request)
-    {       
-        $data = Berita::where('judul', "like", "%".$request->get('query')."%")->get();
+    {
+        $data = Berita::where('judul', "like", "%" . $request->get('query') . "%")->get();
         return new BeritaCollection($data);
     }
     /**
@@ -93,16 +93,16 @@ class BeritaController extends Controller
      * @param  \App\Models\Berita  $berita
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Berita $berita)
+    public function update(Request $request, Berita $beritum)
     {
         if ($request->judul) {
             $request['slug'] = Str::slug($request->judul);
         }
 
-        $berita->update($request->all());
+        $beritum->update($request->all());
         return response()->json([
             'message' => "Data berhasil diupdate",
-            'data' => $berita
+            'data' => $beritum
         ], 200);
     }
 
