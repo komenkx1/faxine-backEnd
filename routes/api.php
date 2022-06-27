@@ -4,6 +4,7 @@
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StatistikController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +38,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::resource('/lokasi', LokasiController::class)->only(['store', 'index']);
 Route::get('/berita/{berita:slug}', [BeritaController::class, 'show'])->name('berita.show');
 Route::resource('/berita', BeritaController::class)->only(['index'])->except(['show']);
+Route::get("/statistik/covid", [StatistikController::class, 'getStatistikCovid']);
+Route::get("/statistik/vaksin", [StatistikController::class, 'getStatistikVaksinasi']);
 
