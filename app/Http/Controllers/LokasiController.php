@@ -18,7 +18,7 @@ class LokasiController extends Controller
      */
     public function index()
     {
-        $data = Lokasi::latest()->get();
+        $data = Lokasi::latest()->paginate(5);
         return new LokasiCollection($data);
         // return response()->json(new PostCollection($data), 200);
     }
@@ -74,7 +74,7 @@ class LokasiController extends Controller
                 Lokasi::create($request->all());
                 return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
             }
-            return response()->json(["message" => "Tanggal mulai minimal sehari sebelum vaksinasi berlangsung!"], 400);
+            return response()->json(["message" => "Pilih Tanggal Mulai Sebelum Hari ini!"], 400);
         }
         return response()->json(["message" => "Tanggal berakhir tidak boleh lebih kecil dari tanggal mulai!"], 400);
 
