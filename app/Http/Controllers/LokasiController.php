@@ -74,7 +74,7 @@ class LokasiController extends Controller
                 Lokasi::create($request->all());
                 return response()->json(['message' => 'Lokasi berhasil ditambahkan'], 201);
             }
-            return response()->json(["message" => "Pilih Tanggal Mulai Sebelum Hari ini!"], 400);
+            return response()->json(["message" => "Pilih Tanggal Mulai Setelah Hari ini!"], 400);
         }
         return response()->json(["message" => "Tanggal berakhir tidak boleh lebih kecil dari tanggal mulai!"], 400);
 
