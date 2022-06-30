@@ -22,7 +22,7 @@
 - [Get Detail Berita](#get-detail-berita)
 - [Add Berita](#add-berita)
 - [Edit Berita](#edit-berita)
-- [Delete Lokasi vaksinasi](#delete-lokasi-vaksinasi-1)
+- [Delete Berita](#delete-berita)
 
 ## Login
 
@@ -52,7 +52,7 @@
 
 ## Get All lokasi
 
-Mendapatkan seluruh informasi lokasi
+Mendapatkan seluruh informasi lokasi vaksinasi
 
 - ### URL
 
@@ -376,7 +376,6 @@ Menambahkan Berita
 - ### Body
 
   - judul: string,
-  - slug: string,
   - content: string,
   - cover: string (url),
 
@@ -407,8 +406,8 @@ Mengedit Berita
 - ## Body
 
   - judul: string,
-  - slug: string,
   - content: string,
+  - cover: string (url),
 
 - ## Response
 
@@ -430,13 +429,13 @@ Mengedit Berita
 }
 ```
 
-## Delete Lokasi vaksinasi
+## Delete Berita
 
-Menghapus lokasi vaksinasi
+Menghapus Berita
 
 - ## URL
 
-  /api/lokasi/:lokasiId
+  /api/berita/slug
 
 - ## Method
 
