@@ -23,6 +23,7 @@
 - [Add Berita](#add-berita)
 - [Edit Berita](#edit-berita)
 - [Delete Berita](#delete-berita)
+- [Profile](#profile)
 
 ## Login
 
@@ -373,6 +374,10 @@ Menambahkan Berita
 
   POST
 
+- ### Header
+
+  Authorization : Bearer xxxxxxxxx-token-xxxxxxxxx
+
 - ### Body
 
   - judul: string,
@@ -391,25 +396,25 @@ Menambahkan Berita
 
 Mengedit Berita
 
-- ## URL
+- ### URL
 
   /api/lokasi/:slug
 
-- ## Method
+- ### Method
 
   PUT
 
-- ## Header
+- ### Header
 
   Authorization : Bearer xxxxxxxxx-token-xxxxxxxxx
 
-- ## Body
+- ### Body
 
   - judul: string,
   - content: string,
   - cover: string (url),
 
-- ## Response
+- ### Response
 
 ```json
 {
@@ -433,22 +438,52 @@ Mengedit Berita
 
 Menghapus Berita
 
-- ## URL
+- ### URL
 
   /api/berita/slug
 
-- ## Method
+- ### Method
 
   DELETE
 
-- ## Header
+- ### Header
 
   Authorization : Bearer xxxxxxxxx-token-xxxxxxxxx
 
-- ## Response
+- ### Response
 
 ```json
 {
   "message": "Data berhasil dihapus"
+}
+```
+
+## Profile
+
+Melihat Detail User
+
+- ### URL
+
+  /api/profile
+
+- ### Method
+
+  GET
+
+- ### Header
+
+  Authorization : Bearer xxxxxxxxx-token-xxxxxxxxx
+
+- ### Response
+
+```json
+{
+  "id": 11,
+  "name": "Andrian Cimen",
+  "email": "andrian***@gmail.com",
+  "email_verified_at": null,
+  "no_hp": "082*********6",
+  "created_at": "2022-06-13T14:32:02.000000Z",
+  "updated_at": "2022-06-13T14:32:02.000000Z"
 }
 ```
